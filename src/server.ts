@@ -34,7 +34,7 @@ app.use((req, res, next) => {
         let encodedStringAtoB: string | undefined;
         // eslint-disable-next-line prefer-const
         encodedStringAtoB = req.header("authorization");
-        const decodedStringAtoB = atob(encodedStringAtoB||"");
+        const decodedStringAtoB = atob(encodedStringAtoB || "");
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         req.user = JSON.parse(decodedStringAtoB);
     } catch (e) {
@@ -63,11 +63,10 @@ app.use((err: Error | CustomError, req: Request, res: Response, _: NextFunction)
 
 const viewsDir = path.join(__dirname, 'views');
 app.set('views', viewsDir);
-
 const staticDir = path.join(__dirname, 'public');
-const uploadDir = path.join(__dirname, 'upload');
+const uploadDir = path.join(process.cwd(), 'uploads');
+app.use("/uploads", express.static(uploadDir));
 app.use(express.static(staticDir));
-app.use(express.static(uploadDir));
 
 // app.get('*', (_: Request, res: Response) => {
 //     res.sendFile('index.html', {root: viewsDir});
